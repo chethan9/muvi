@@ -17,7 +17,9 @@ class GetmovieCall {
       callName: 'Getmovie',
       apiUrl: 'https://proxy.vizsoft.in/https://backend.vizsoft.in/movie',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'origin': 'https://proxy.vizsoft.in',
+      },
       params: {
         'name': name,
       },
@@ -123,18 +125,17 @@ class OnethreeCall {
 
 class TmdbCall {
   static Future<ApiCallResponse> call({
-    String? tmdbquery = 'inception',
+    String? tmdbquery = '',
   }) {
     return ApiManager.instance.makeApiCall(
-      callName: 'tmdb',
-      apiUrl:
-          'https://proxy.vizsoft.in/https://api.themoviedb.org/3/search/multi',
+      callName: 'TMDB',
+      apiUrl: 'https://proxy.vizsoft.in/https://backend.vizsoft.in/info',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'origin': 'https://proxy.vizsoft.in',
+      },
       params: {
-        'api_key': "0308f0a9278f09cbd10fe7441ccc6664",
-        'query': tmdbquery,
-        'sort_by': "popularity.desc",
+        'name': tmdbquery,
       },
       returnBody: true,
       encodeBodyUtf8: false,
@@ -143,13 +144,9 @@ class TmdbCall {
     );
   }
 
-  static dynamic page(dynamic response) => getJsonField(
+  static dynamic tmdbinfo(dynamic response) => getJsonField(
         response,
-        r'''$.page''',
-      );
-  static dynamic tmdbresult(dynamic response) => getJsonField(
-        response,
-        r'''$.results''',
+        r'''$.info''',
         true,
       );
 }

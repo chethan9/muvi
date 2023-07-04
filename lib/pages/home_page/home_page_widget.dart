@@ -52,8 +52,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           context: context,
           builder: (alertDialogContext) {
             return AlertDialog(
-              title: Text('No result '),
-              content: Text('Please try correcting the name'),
+              title: Text('No result'),
+              content: Text('Unable to find any valid links :('),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(alertDialogContext),
@@ -63,6 +63,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             );
           },
         );
+        setState(() {
+          _model.animation = true;
+        });
+        context.safePop();
       }
     });
 
@@ -110,7 +114,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           alignment: AlignmentDirectional(0.0, 0.0),
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
-                                100.0, 0.0, 0.0, 0.0),
+                                50.0, 0.0, 0.0, 0.0),
                             child: InkWell(
                               splashColor: Colors.transparent,
                               focusColor: Colors.transparent,
@@ -122,7 +126,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Icon(
                                 Icons.arrow_circle_left_outlined,
                                 color: Color(0xFFFDFDFD),
-                                size: 75.0,
+                                size: 50.0,
                               ),
                             ),
                           ),
@@ -299,6 +303,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           provider: getJsonField(
                                             childrensItem,
                                             r'''$..group''',
+                                          ),
+                                          copy: getJsonField(
+                                            childrensItem,
+                                            r'''$..Magnet''',
                                           ),
                                         ),
                                       );

@@ -1,4 +1,4 @@
-package com.mycompany.muvi
+package com.mycompany.quickflix
 
 import io.flutter.embedding.android.FlutterActivity
 

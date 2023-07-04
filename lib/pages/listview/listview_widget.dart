@@ -1,7 +1,9 @@
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +26,7 @@ class ListviewWidget extends StatefulWidget {
     required this.language,
     required this.codec,
     required this.subtitles,
+    this.copy,
   }) : super(key: key);
 
   final dynamic title;
@@ -39,6 +42,7 @@ class ListviewWidget extends StatefulWidget {
   final dynamic language;
   final dynamic codec;
   final dynamic subtitles;
+  final dynamic copy;
 
   @override
   _ListviewWidgetState createState() => _ListviewWidgetState();
@@ -438,6 +442,47 @@ class _ListviewWidgetState extends State<ListviewWidget> {
                         ],
                       ),
                     ].divide(SizedBox(height: 3.0)),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(5.0, 5.0, 25.0, 5.0),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    await Clipboard.setData(
+                        ClipboardData(text: widget.copy!.toString()));
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FlutterFlowIconButton(
+                        borderColor: Colors.white,
+                        borderRadius: 20.0,
+                        borderWidth: 1.0,
+                        buttonSize: 40.0,
+                        fillColor: Colors.white,
+                        icon: Icon(
+                          Icons.content_copy_sharp,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          print('IconButton pressed ...');
+                        },
+                      ),
+                      Text(
+                        'Copy',
+                        style: FlutterFlowTheme.of(context).titleLarge.override(
+                              fontFamily: 'Outfit',
+                              color: Colors.white,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -63,6 +63,12 @@ class _ProcessingWidgetState extends State<ProcessingWidget> {
               _model.vidpath,
               ParamType.String,
             ),
+            'debirdlink': serializeParam(
+              DownloadLinkCall.debird(
+                (_model.debirdlink?.jsonBody ?? ''),
+              ).toString(),
+              ParamType.String,
+            ),
           }.withoutNulls,
           extra: <String, dynamic>{
             kTransitionInfoKey: TransitionInfo(
@@ -106,80 +112,84 @@ class _ProcessingWidgetState extends State<ProcessingWidget> {
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        body: SafeArea(
-          top: true,
-          child: Align(
-            alignment: AlignmentDirectional(0.0, 0.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(
-                  'assets/lottie_animations/lf20_aZTdD5.json',
-                  width: 250.0,
-                  height: 230.0,
-                  fit: BoxFit.cover,
-                  animate: true,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Preaparing download ....',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Readex Pro',
-                            fontSize: 20.0,
-                          ),
-                    ),
-                    FlutterFlowTimer(
-                      initialTime: _model.timerMilliseconds,
-                      getDisplayTime: (value) => StopWatchTimer.getDisplayTime(
-                        value,
-                        hours: false,
-                        milliSecond: false,
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          body: SafeArea(
+            top: true,
+            child: Align(
+              alignment: AlignmentDirectional(0.0, 0.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/lottie_animations/lf20_aZTdD5.json',
+                    width: 250.0,
+                    height: 230.0,
+                    fit: BoxFit.cover,
+                    animate: true,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Preaparing download ....',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              fontSize: 20.0,
+                            ),
                       ),
-                      timer: _model.timerController,
-                      updateStateInterval: Duration(milliseconds: 1000),
-                      onChanged: (value, displayTime, shouldUpdate) {
-                        _model.timerMilliseconds = value;
-                        _model.timerValue = displayTime;
-                        if (shouldUpdate) setState(() {});
-                      },
-                      onEnded: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: Text(
-                                  'Your video is currently downloading...'),
-                              content: Text(
-                                  'Please visit after 30 minutes and choose same movie to get updated download link.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext),
-                                  child: Text('Ok'),
+                      FlutterFlowTimer(
+                        initialTime: _model.timerMilliseconds,
+                        getDisplayTime: (value) =>
+                            StopWatchTimer.getDisplayTime(
+                          value,
+                          hours: false,
+                          milliSecond: false,
+                        ),
+                        timer: _model.timerController,
+                        updateStateInterval: Duration(milliseconds: 1000),
+                        onChanged: (value, displayTime, shouldUpdate) {
+                          _model.timerMilliseconds = value;
+                          _model.timerValue = displayTime;
+                          if (shouldUpdate) setState(() {});
+                        },
+                        onEnded: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text(
+                                    'Your video is currently downloading...'),
+                                content: Text(
+                                    'Please visit after 30 minutes and choose same movie to get updated download link.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          context.safePop();
+                        },
+                        textAlign: TextAlign.start,
+                        style:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Outfit',
+                                  fontSize: 20.0,
                                 ),
-                              ],
-                            );
-                          },
-                        );
-                        context.safePop();
-                      },
-                      textAlign: TextAlign.start,
-                      style:
-                          FlutterFlowTheme.of(context).headlineSmall.override(
-                                fontFamily: 'Outfit',
-                                fontSize: 20.0,
-                              ),
-                    ),
-                  ],
-                ),
-              ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

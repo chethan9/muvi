@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow_theme.dart';
 
 import '../../index.dart';
@@ -63,6 +62,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             videolinkstring:
                 params.getParam('videolinkstring', ParamType.String),
             videopath: params.getParam('videopath', ParamType.String),
+            debirdlink: params.getParam('debirdlink', ParamType.String),
           ),
         ),
         FFRoute(
@@ -74,7 +74,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
-      observers: [routeObserver],
     );
 
 extension NavParamExtensions on Map<String, String?> {

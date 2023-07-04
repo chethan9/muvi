@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_video_player.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,10 +13,12 @@ class PlayerWidget extends StatefulWidget {
     Key? key,
     this.videolinkstring,
     required this.videopath,
+    this.debirdlink,
   }) : super(key: key);
 
   final String? videolinkstring;
   final String? videopath;
+  final String? debirdlink;
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
@@ -51,110 +52,131 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: Color(0xFFF3F3F3),
         body: SafeArea(
           top: true,
-          child: Align(
-            alignment: AlignmentDirectional(0.0, 0.0),
-            child: Container(
-              width: MediaQuery.sizeOf(context).width * 0.9,
-              height: MediaQuery.sizeOf(context).height * 0.9,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FFButtonWidget(
-                        onPressed: () async {
-                          await launchURL(widget.videolinkstring!);
-                        },
-                        text: 'Download',
-                        icon: Icon(
-                          Icons.downloading_rounded,
-                          size: 35.0,
-                        ),
-                        options: FFButtonOptions(
-                          height: 60.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              24.0, 0.0, 24.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: Color(0xFF4CA76E),
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      FFButtonWidget(
-                        onPressed: () async {
-                          context.goNamed(
-                            'Home',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                width: MediaQuery.sizeOf(context).width * 1.0,
+                height: 125.0,
+                decoration: BoxDecoration(
+                  color: Color(0xFF00B894),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    MouseRegion(
+                      opaque: false,
+                      cursor: MouseCursor.defer ?? MouseCursor.defer,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  50.0, 0.0, 0.0, 0.0),
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.safePop();
+                                },
+                                child: Icon(
+                                  Icons.home_outlined,
+                                  color: Color(0xFFFDFDFD),
+                                  size: 35.0,
+                                ),
                               ),
-                            },
-                          );
-                        },
-                        text: 'home',
-                        icon: Icon(
-                          Icons.home_outlined,
-                          size: 35.0,
-                        ),
-                        options: FFButtonOptions(
-                          height: 60.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              24.0, 0.0, 24.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: Color(0xFF4CA76E),
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                5.0, 0.0, 0.0, 0.0),
+                            child: Text(
+                              'Home',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
-                                    fontSize: 20.0,
+                                    fontSize: 25.0,
                                   ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 1.0,
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(8.0),
+                        ],
+                      ),
+                      onEnter: ((event) async {
+                        setState(() => _model.mouseRegionHovered1 = true);
+                      }),
+                      onExit: ((event) async {
+                        setState(() => _model.mouseRegionHovered1 = false);
+                      }),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 100.0, 0.0),
+                          child: Text(
+                            'Your download is ready 🎉',
+                            style: FlutterFlowTheme.of(context)
+                                .headlineLarge
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: Colors.white,
+                                  fontSize: 25.0,
+                                ),
+                          ),
                         ),
                       ),
-                    ].divide(SizedBox(width: 15.0)),
-                  ),
-                  FlutterFlowVideoPlayer(
-                    path: widget.videopath!,
-                    videoType: VideoType.network,
-                    width: 640.0,
-                    height: 480.0,
-                    aspectRatio: 1.70,
-                    autoPlay: false,
-                    looping: true,
-                    showControls: true,
-                    allowFullScreen: true,
-                    allowPlaybackSpeedMenu: true,
-                    lazyLoad: false,
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+              MouseRegion(
+                opaque: false,
+                cursor: MouseCursor.defer ?? MouseCursor.defer,
+                child: Align(
+                  alignment: AlignmentDirectional(0.0, 0.0),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await launchURL(widget.videolinkstring!);
+                      },
+                      child: AutoSizeText(
+                        'Download Link: ${widget.videolinkstring}',
+                        maxLines: 1,
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              fontSize: 25.0,
+                              decoration: TextDecoration.underline,
+                            ),
+                      ),
+                    ),
+                  ),
+                ),
+                onEnter: ((event) async {
+                  setState(() => _model.mouseRegionHovered2 = true);
+                }),
+                onExit: ((event) async {
+                  setState(() => _model.mouseRegionHovered2 = false);
+                }),
+              ),
+            ],
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import '/custom_code/actions/index.dart' as actions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,8 +42,8 @@ class HomeModel extends FlutterFlowModel {
     return null;
   }
 
-  // Stores action output result for [Backend Call - API (tmdb)] action in Button widget.
-  ApiCallResponse? tmdb;
+  // Stores action output result for [Backend Call - API (TMDB)] action in Button widget.
+  ApiCallResponse? movie;
   // Stores action output result for [Custom Action - getLanguageName] action in Row widget.
   String? language;
   // Stores action output result for [Custom Action - getYear] action in Row widget.

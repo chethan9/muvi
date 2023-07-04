@@ -6,6 +6,7 @@ import '/custom_code/actions/index.dart' as actions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,156 +89,170 @@ class _HomeWidgetState extends State<HomeWidget> {
                         Form(
                           key: _model.formKey,
                           autovalidateMode: AutovalidateMode.disabled,
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                20.0, 0.0, 20.0, 0.0),
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 0.5,
-                              child: TextFormField(
-                                controller: _model.searchController,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  '_model.searchController',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
-                                ),
-                                autofocus: true,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText:
-                                      'Enter Movie, TV series, Game name..',
-                                  labelStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        color: Color(0xFFB6B7B7),
-                                        fontSize: 16.0,
-                                      ),
-                                  hintStyle:
-                                      FlutterFlowTheme.of(context).labelMedium,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 2.0,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 0.0, 20.0, 0.0),
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  child: TextFormField(
+                                    controller: _model.searchController,
+                                    onChanged: (_) => EasyDebounce.debounce(
+                                      '_model.searchController',
+                                      Duration(milliseconds: 2000),
+                                      () => setState(() {}),
                                     ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0xFF00B894),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  errorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedErrorBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  suffixIcon: _model
-                                          .searchController!.text.isNotEmpty
-                                      ? InkWell(
-                                          onTap: () async {
-                                            _model.searchController?.clear();
-                                            setState(() {});
-                                          },
-                                          child: Icon(
-                                            Icons.clear,
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            size: 35.0,
+                                    autofocus: true,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText:
+                                          'Enter Movie, TV series, Game name..',
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            color: Color(0xFFB6B7B7),
+                                            fontSize: 16.0,
                                           ),
-                                        )
-                                      : null,
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 30.0,
-                                    ),
-                                validator: _model.searchControllerValidator
-                                    .asValidator(context),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              15.0, 15.0, 15.0, 15.0),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              if (_model.formKey.currentState == null ||
-                                  !_model.formKey.currentState!.validate()) {
-                                return;
-                              }
-                              setState(() {
-                                _model.animation = false;
-                              });
-                              _model.tmdb = await TmdbCall.call(
-                                tmdbquery: _model.searchController.text,
-                              );
-                              if ((_model.tmdb?.succeeded ?? true)) {
-                                setState(() {
-                                  _model.animation = true;
-                                });
-                              } else {
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('No result '),
-                                      content: Text(
-                                          'Please try correcting the name'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          width: 2.0,
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-
-                              setState(() {});
-                            },
-                            text: 'Search',
-                            options: FFButtonOptions(
-                              width: 150.0,
-                              height: 50.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: Color(0xFF2D3436),
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w600,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF00B894),
+                                          width: 2.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      errorBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 2.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      focusedErrorBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 2.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      suffixIcon: _model
+                                              .searchController!.text.isNotEmpty
+                                          ? InkWell(
+                                              onTap: () async {
+                                                _model.searchController
+                                                    ?.clear();
+                                                setState(() {});
+                                              },
+                                              child: Icon(
+                                                Icons.clear,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                size: 35.0,
+                                              ),
+                                            )
+                                          : null,
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          fontSize: 30.0,
+                                        ),
+                                    validator: _model.searchControllerValidator
+                                        .asValidator(context),
                                   ),
-                              borderSide: BorderSide(
-                                color: Color(0xFF038E73),
-                                width: 2.0,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            showLoadingIndicator: false,
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    15.0, 15.0, 15.0, 15.0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    if (_model.formKey.currentState == null ||
+                                        !_model.formKey.currentState!
+                                            .validate()) {
+                                      return;
+                                    }
+                                    setState(() {
+                                      _model.animation = false;
+                                    });
+                                    _model.movie = await TmdbCall.call(
+                                      tmdbquery: _model.searchController.text,
+                                    );
+                                    if ((_model.movie?.succeeded ?? true)) {
+                                      setState(() {
+                                        _model.animation = true;
+                                      });
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('No result '),
+                                            content: Text(
+                                                'Please try correcting the name'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+
+                                    setState(() {});
+                                  },
+                                  text: 'Search',
+                                  options: FFButtonOptions(
+                                    width: 150.0,
+                                    height: 50.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: Color(0xFF2D3436),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF038E73),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  showLoadingIndicator: false,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -276,8 +291,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                             if (_model.animation == true)
                               Builder(
                                 builder: (context) {
-                                  final tmdbchild = TmdbCall.tmdbresult(
-                                        (_model.tmdb?.jsonBody ?? ''),
+                                  final tmdbchild = TmdbCall.tmdbinfo(
+                                        (_model.movie?.jsonBody ?? ''),
                                       )?.toList() ??
                                       [];
                                   return ListView.builder(
@@ -334,7 +349,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                       serializeParam(
                                                     '${getJsonField(
                                                       tmdbchildItem,
-                                                      r'''$..title''',
+                                                      r'''$..name''',
                                                     ).toString()} ${_model.relYear}',
                                                     ParamType.String,
                                                   ),
@@ -361,11 +376,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                         BorderRadius.circular(
                                                             8.0),
                                                     child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          'https://www.themoviedb.org/t/p/w94_and_h141_bestv2${getJsonField(
+                                                      imageUrl: getJsonField(
                                                         tmdbchildItem,
-                                                        r'''$..poster_path''',
-                                                      ).toString()}',
+                                                        r'''$..poster_image_path''',
+                                                      ),
                                                       width: 94.0,
                                                       height: 141.0,
                                                       fit: BoxFit.cover,
@@ -383,7 +397,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                           MainAxisSize.max,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .center,
+                                                              .start,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
@@ -391,7 +405,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                         Text(
                                                           getJsonField(
                                                             tmdbchildItem,
-                                                            r'''$..title''',
+                                                            r'''$..name''',
                                                           ).toString(),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -405,21 +419,53 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                         .w500,
                                                               ),
                                                         ),
-                                                        Text(
-                                                          getJsonField(
-                                                            tmdbchildItem,
-                                                            r'''$..release_date''',
-                                                          ).toString(),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                color: Color(
-                                                                    0xFF6A7676),
-                                                                fontSize: 16.0,
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    getJsonField(
+                                                                  tmdbchildItem,
+                                                                  r'''$..type''',
+                                                                ).toString(),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Readex Pro',
+                                                                      color: Color(
+                                                                          0xFF626262),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                               ),
+                                                              TextSpan(
+                                                                text: ' - ',
+                                                                style:
+                                                                    TextStyle(),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    getJsonField(
+                                                                  tmdbchildItem,
+                                                                  r'''$..release_date''',
+                                                                ).toString(),
+                                                                style:
+                                                                    TextStyle(),
+                                                              )
+                                                            ],
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  fontSize:
+                                                                      16.0,
+                                                                ),
+                                                          ),
                                                         ),
                                                         Divider(
                                                           height: 2.0,
@@ -439,7 +485,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                                 replacement:
                                                                     '…',
                                                               ),
-                                                          maxLines: 2,
+                                                          maxLines: 3,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyMedium
@@ -453,7 +499,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                               ),
                                                         ),
                                                       ].divide(SizedBox(
-                                                          height: 10.0)),
+                                                          height: 5.0)),
                                                     ),
                                                   ),
                                                 ),

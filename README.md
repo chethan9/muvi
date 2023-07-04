@@ -1,4 +1,4 @@
-# muvi
+# QuickFlix
 
 A new Flutter project.
 
